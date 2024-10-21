@@ -1,15 +1,23 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { View, Text, ActivityIndicator, StyleSheet, Button, TouchableOpacity } from "react-native";
 import { FlatList } from "react-native";
 import styles from "./styles/themeStyles";
 import { Link } from "expo-router";
+import { UserContext } from "./context/UserContext";
 
 type character = {
   name: string;
 };
 
 const CharacterSelection = () => {
-  const [character, setCharacters] = useState<character[]>([]);
+  const [characters, setCharacters] = useState<character[]>([]);
+  const context = useContext(UserContext); 
+  
+  if (!context) return <Text>Erreur: context indisponible</Text>;
+
+  const {setCharacter} = context;
+
+ 
 
   useEffect(() => {
     fetch('https://swapi.dev/api/people')
@@ -23,8 +31,11 @@ const CharacterSelection = () => {
   const renderItem = ({ item }: { item: character }) => (
     <View>
       <Text>{item.name}</Text>
-      <Link href={"./CharacterSelection"} asChild>
-        <TouchableOpacity title="Jedi" onPress={() => setCharacters("Jedi")} />
+      <Link href={"./PlanetSelection"} asChild>
+        <TouchableOpacity onPress={() => setCharacter(item.name)}>
+          <Text>Sélectionnez</Text>  
+        </TouchableOpacity>
+
       </Link>
     </View>
   );
@@ -35,8 +46,8 @@ const CharacterSelection = () => {
       <Text>Sélectionnez un personnage</Text>
 
        <FlatList
-      data={character}
-      keyExtractor={user => user.name.toString()}
+      data={characters}
+      keyExtractor={chara => chara.name.toString()}
       renderItem={renderItem}
     />
     </View>

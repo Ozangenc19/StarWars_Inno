@@ -5,6 +5,8 @@ import styles from "./styles/themeStyles";
 import { Link } from "expo-router";
 import { UserContext } from "./context/UserContext";
 
+//finir cette classe shipselection 
+
 type planets = {
   name: string;
 
@@ -20,7 +22,7 @@ const ApiDataFetcher = () => {
 
 
   useEffect(() => {
-    fetch('https://swapi.dev/api/planets')
+    fetch('https://swapi.dev/api/starships')
       .then(response => response.json())
       .then(data => {  
         setPlanets(data.results);
